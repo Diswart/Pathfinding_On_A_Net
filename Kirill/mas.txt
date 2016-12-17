@@ -1,0 +1,14 @@
+for (int i = 0; i<n;i++) 
+for (int j = 0; j<n;j++) 
+{ 
+A[i][j]=0; 
+for (int X = 3; X >= 0; X--) { 
+NN = 0.01 * ((int) (Math.random()*101)); 
+
+if (0<=NN && NN<=P) num = 1; 
+if (NN<=1 && NN>P) num = 0; 
+if (NN==P && NN==0.0) num = 0; 
+if (NN==P && NN==1.0) num =1; 
+A[i][j] += num*Math.pow(2, X); 
+} 
+} 

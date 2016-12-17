@@ -1,0 +1,87 @@
+ 		 if (j!=19)//right side
+                {
+                    Line lineR = new Line();
+                    lineR.setStartX(centerX+radius);
+                    lineR.setStartY(centerY);
+                    lineR.setEndX(centerX+3*radius);
+                    lineR.setEndY(centerY);
+                    Line arrowU = new Line();
+                    arrowU.setStartX(lineR.getEndX());//arrowhead upper part
+                    arrowU.setStartY(lineR.getEndY());
+                    arrowU.setEndX(lineR.getEndX()-radius/4);
+                    arrowU.setEndY(lineR.getEndY()-radius/4);
+                    Line arrowD = new Line();
+                    arrowD.setStartX(lineR.getEndX());//arrowhead bottom part
+                    arrowD.setStartY(lineR.getEndY());
+                    arrowD.setEndX(lineR.getEndX()-radius/4);
+                    arrowD.setEndY(lineR.getEndY()+radius/4);
+                    group.getChildren().add(lineR);
+                    group.getChildren().add(arrowU);
+                    group.getChildren().add(arrowD);
+                }
+                //-----------
+                if (i!=1)//upper side
+                {
+                    Line lineU = new Line();
+                    lineU.setStartX(centerX);
+                    lineU.setStartY(centerY-radius);
+                    lineU.setEndX(centerX);
+                    lineU.setEndY(centerY-3*radius);
+                    Line arrowR = new Line();
+                    arrowR.setStartX(lineU.getEndX());//arrowhead right part
+                    arrowR.setStartY(lineU.getEndY());
+                    arrowR.setEndX(lineU.getEndX()+radius/4);
+                    arrowR.setEndY(lineU.getEndY()+radius/4);
+                    Line arrowL = new Line();
+                    arrowL.setStartX(lineU.getEndX());//arrowhead left part
+                    arrowL.setStartY(lineU.getEndY());
+                    arrowL.setEndX(lineU.getEndX()-radius/4);
+                    arrowL.setEndY(lineU.getEndY()+radius/4);
+                    group.getChildren().add(lineU);
+                    group.getChildren().add(arrowR);
+                    group.getChildren().add(arrowL);
+                }
+                //-----------
+                if (j!=1)//left side
+                {
+                    Line lineL = new Line();
+                    lineL.setStartX(centerX-radius);
+                    lineL.setStartY(centerY);
+                    lineL.setEndX(centerX-3*radius);
+                    lineL.setEndY(centerY);
+                    Line arrowU = new Line();
+                    arrowU.setStartX(lineL.getEndX());//arrowhead upper part
+                    arrowU.setStartY(lineL.getEndY());
+                    arrowU.setEndX(lineL.getEndX()+radius/4);
+                    arrowU.setEndY(lineL.getEndY()-radius/4);
+                    Line arrowD = new Line();
+                    arrowD.setStartX(lineL.getEndX());//arrowhead bottom part
+                    arrowD.setStartY(lineL.getEndY());
+                    arrowD.setEndX(lineL.getEndX()+radius/4);
+                    arrowD.setEndY(lineL.getEndY()+radius/4);
+                    group.getChildren().add(lineL);
+                    group.getChildren().add(arrowU);
+                    group.getChildren().add(arrowD);
+                }
+                //-----------
+                if (i!=19)//bottom side
+                {
+                    Line lineD = new Line();
+                    lineD.setStartX(centerX);
+                    lineD.setStartY(centerY+radius);
+                    lineD.setEndX(centerX);
+                    lineD.setEndY(centerY+3*radius);
+                    Line arrowR = new Line();
+                    arrowR.setStartX(lineD.getEndX());//arrowhead right part
+                    arrowR.setStartY(lineD.getEndY());
+                    arrowR.setEndX(lineD.getEndX()+radius/4);
+                    arrowR.setEndY(lineD.getEndY()-radius/4);
+                    Line arrowL = new Line();
+                    arrowL.setStartX(lineD.getEndX());//arrowhead left part
+                    arrowL.setStartY(lineD.getEndY());
+                    arrowL.setEndX(lineD.getEndX()-radius/4);
+                    arrowL.setEndY(lineD.getEndY()-radius/4);
+                    group.getChildren().add(lineD);
+                    group.getChildren().add(arrowR);
+                    group.getChildren().add(arrowL);
+                }

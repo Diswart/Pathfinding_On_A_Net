@@ -1,0 +1,194 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Circ;
+
+import java.util.ArrayList;
+
+public class Klaster {
+    private ArrayList<ArrayList <Integer>> A; // основная матрица
+    private ArrayList<ArrayList <Integer>> masf; // текущая матрица
+    private ArrayList<ArrayList <Integer>> msf; // кротчайший путь
+    private int k; // длина текущего пути
+    private int kfm; // наименьшая длина пути
+
+    public Klaster() {
+        A=new ArrayList<ArrayList <Integer>>();
+        masf=new ArrayList<ArrayList <Integer>>();
+        msf=new ArrayList<ArrayList <Integer>>();
+    }
+
+    public void reset()
+    {
+        A=new ArrayList<ArrayList <Integer>>();
+        masf=new ArrayList<ArrayList <Integer>>();
+        msf=new ArrayList<ArrayList <Integer>>();
+    }
+
+    // если наименьший путь, то запоминаем его
+    private void filling(int i, int j)
+    {
+        if (kfm == 0 || kfm > k){
+            masf.get(i).set(j, 3); // 3 - конец пути
+            for (int is = 0; is < masf.size(); is++)
+                for (int js = 0; js < masf.size(); js++)
+                    msf.get(is).set(js, masf.get(is).get(js));
+            kfm = ++k;
+            k--;
+            masf.get(i).set(j, 0);
+        }
+    }
+
+    // проверка на наличие рядом конечной точки
+    private boolean inspection(int i, int j, int ik, int jk)
+    {
+        int mask = 0x1;
+        int maska = A.get(i).get(j) & (mask);
+        if ((j != A.size()-1) && (maska == 1) && (i == ik) && (j + 1 == jk))
+        {
+            filling(i, j + 1);
+            return true;
+        }
+        maska = A.get(i).get(j)&(mask<<2);
+        if ((j != 0) && (maska == 4) && (i == ik) && (j - 1 == jk))
+        {
+            filling(i, j - 1);
+            return true;
+        }
+        maska = A.get(i).get(j) &(mask<<1);
+        if ((i != 0) && (maska == 2) && (i - 1 == ik) && (j == jk))
+        {
+            filling(i - 1, j);
+            return true;
+        }
+        maska = A.get(i).get(j) &(mask<<3);
+        if ((i != A.size()-1) && (maska == 8) && (i + 1 == ik) && (j == jk)){
+            filling(i + 1, j);
+            return true;
+        }
+        return false;
+    }
+
+//    // замена на 1, 2, 4, 8 (направления)
+//    private boolean replacement(int i, int j)
+//    {
+//        int mask = 0x1;
+//        int maska = A.get(i).get(j) & (mask);
+//        if ((j != A.size()-1) && (maska == 1)){
+//            masf.get(i).set(j, 1);
+//            return true;
+//        }
+//        maska = A.get(i).get(j)&(mask<<2);
+//        if ((j != 0) && (maska == 4)){
+//            masf.get(i).set(j, 4);
+//            return true;
+//        }
+//        maska = A.get(i).get(j) &(mask<<1);
+//        if ((i != 0) && (maska == 2)){
+//            masf.get(i).set(j, 2);
+//            return true;
+//        }
+//        maska = A.get(i).get(j) &(mask<<3);
+//        if ((i != A.size()-1) && (maska == 8)){
+//            masf.get(i).set(j, 8);
+//            return true;
+//        }
+//        return false;
+//    }
+    
+    // нахождение кратчайшего пути
+    private boolean queue(int i, int j, int ik, int jk) 
+    {
+        k++;
+        boolean flag=false;
+        if (inspection(i, j, ik, jk))
+        {
+            masf.get(i).set(j,0);
+            return true;
+        }
+
+        int mask = 0x1;
+        int maska = A.get(i).get(j) & (mask);
+        if ((j != A.size()-1) && (masf.get(i).get(j + 1) == 0))
+        {
+            if (maska == 1){
+                masf.get(i).set(j, 1);
+                if (queue(i, j + 1, ik, jk))
+                    flag = true;
+                masf.get(i).set(j, 0);
+            }
+        }
+        maska = A.get(i).get(j) &(mask<<2);
+        if ((j != 0) && (masf.get(i).get(j - 1) == 0))
+        {
+            if (maska == 4) {
+                masf.get(i).set(j, 4);
+                if (queue(i, j - 1, ik, jk))
+                    flag = true;
+                masf.get(i).set(j, 0);
+            }
+        }
+        maska = A.get(i).get(j) &(mask<<1);
+        if ((i != 0) && (masf.get(i - 1).get(j) == 0))
+        {
+            if (maska == 2) {
+                masf.get(i).set(j, 2);
+                if (queue(i - 1, j, ik, jk))
+                    flag = true;
+                masf.get(i).set(j, 0);
+            }
+        }
+        maska = A.get(i).get(j) &(mask<<3);
+        if ((i != A.size()-1) && (masf.get(i + 1).get(j) == 0))
+        {
+            if (maska == 8) {
+                masf.get(i).set(j, 8);
+                if (queue(i + 1, j, ik, jk))
+                    flag = true;
+                masf.get(i).set(j, 0);
+            }
+        }
+        k--;
+        return flag;
+    }
+
+    // обнуление данных и вызов функции queue, споследующим выводом пути
+    public ArrayList<ArrayList<Integer>> path(int i1, int j1, int i2, int j2, ArrayList<ArrayList <Integer>> mas){
+        k=0;
+        kfm=0;
+        ArrayList<ArrayList<Integer>> a=(ArrayList)mas.clone();
+        for (int is= 0; is<mas.size();is++)
+        {
+            ArrayList <Integer> inner = new ArrayList<Integer>();
+            for (int js = 0; js<mas.size();js++)
+                inner.add(0);
+            msf.add(inner);
+        }
+        for (int is= 0; is<mas.size();is++)
+        {
+            ArrayList <Integer> inner = new ArrayList<Integer>();
+            for (int js = 0; js<mas.size();js++)
+                inner.add(0);
+            masf.add(inner);
+        }
+        for (int is= 0; is<mas.size();is++)
+        {
+            ArrayList <Integer> inner = new ArrayList<Integer>();
+            for (int js = 0; js<mas.size();js++)
+                inner.add(mas.get(is).get(js));
+            A.add(inner);
+        }
+        queue(i1, j1, i2, j2);
+
+        return msf;
+    }
+    
+    // запись матрицы в объект
+    public void setter(ArrayList<ArrayList <Integer>> mas, ArrayList<ArrayList <Integer>> masf, ArrayList<ArrayList <Integer>> msf){
+        A=mas;
+        this.masf=masf;
+        this.msf=msf;
+    }
+}
